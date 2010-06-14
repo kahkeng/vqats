@@ -1,0 +1,47 @@
+Video Quality Assessment Tool using SSIM (VQATS).
+Written by Kah Keng Tay, kahkeng AT gmail DOT com, 2008.
+
+This tool computes VSSIM*, a similarity score between two videos, when given
+their image sequences as input. When comparing any two frames, we average the
+RGB SSIM values and use that as the overall video SSIM index for the frames.
+
+Features:
+- accomodates frame skips and stalls in input videos.
+- performs such alignment automatically and quickly.
+- minimize computation to keep things fast.
+
+Credit goes to:
+- Zhou Wang for the SSIM metric. http://www.ece.uwaterloo.ca/~z70wang/research/ssim/
+- Rabah Mehdi for original SSIM OpenCV code. http://mehdi.rabah.free.fr/
+- John-Mark Gurney for fib package. http://resnet.uoregon.edu/~gurney_j/jmpc/fib.html
+
+
+Setup:
+
+1. Install some pre-requisites (if using Fedora Core):
+   yum install pkgconfig libpng zlib libjpeg libtiff libjasper
+
+2. Download and install OpenCV. Reference: http://opencvlibrary.sourceforge.net/InstallGuide_Linux
+   wget http://downloads.sourceforge.net/opencvlibrary/opencv-1.0.0.tar.gz
+   tar xzvf opencv-1.0.0.tar.gz
+   cd opencv-1.0.0
+   PKG_CONFIG=/usr/bin/pkg-config PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/ ./configure --without-ffmpeg --enable-static
+   make
+   make install
+   ldconfig -v
+
+3. Download and install FFmpeg.
+   svn checkout -r 10489 svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
+   cd ffmpeg
+   ./configure --enable-gpl --enable-pp
+   make
+   make install
+
+4. Build VQATS.
+   make
+
+5. Update eval.py with paths to ffmpeg and the VQATS executable.
+
+6. Compute VSSIM* using eval.py.
+   eval.py <refvideo> <testvideo>
+
